@@ -78,3 +78,18 @@ describe("Gilded Rose -> Aged brie", () => {
     expect(item.quality).to.equal(50);
   });
 })
+
+
+describe("Gilded Rose -> Sulfuras", () => {
+  test("Sulfuras never decreases in quality or sellIn", () => {
+    const item = updateOnce("Sulfuras, Hand of Ragnaros", 10, 80);
+    expect(item.quality).to.equal(80);
+    expect(item.sellIn).to.equal(10);
+  })
+
+  test("Sulfuras keeps quality and sellIn after sell date", () => {
+    const item = updateOnce("Sulfuras, Hand of Ragnaros", -1, 80);
+    expect(item.quality).to.equal(80);
+    expect(item.sellIn).to.equal(-1);
+  });
+})
