@@ -88,6 +88,12 @@ describe("Gilded Rose -> Aged brie", () => {
     const item = updateOnce("Aged Brie", 0, 50);
     expect(item.quality).to.equal(50);
   });
+
+  test("Mutant: Aged Brie at sellIn=1 gains only 1 quality", () => {
+    const item = updateOnce("Aged Brie", 1, 20);
+    expect(item.sellIn).to.equal(0);
+    expect(item.quality).to.equal(21);
+  });
 });
 
 describe("Gilded Rose -> Sulfuras", () => {
@@ -153,6 +159,12 @@ describe("Gilded Rose -> Backstage passes", () => {
     const item = updateOnce("Backstage passes to a TAFKAL80ETC concert", 5, 49);
     expect(item.quality).to.equal(50);
   });
+
+  test("Mutant: Backstage passes at sellIn=1 keeps quality", () => {
+    const item = updateOnce("Backstage passes to a TAFKAL80ETC concert", 1, 20);
+    expect(item.quality).to.equal(23);
+    expect(item.sellIn).to.equal(0);
+  });
 });
 
 describe("Gilded Rose -> Conjured items", () => {
@@ -161,4 +173,21 @@ describe("Gilded Rose -> Conjured items", () => {
     expect(item.quality).to.equal(18);
     expect(item.sellIn).to.equal(9);
   });
-})
+
+  test("Conjured items degrade in quality twice as fast", () => {
+    const item = updateOnce("Conjured Mana Cake", -5, 20);
+    expect(item.quality).to.equal(16);
+    expect(item.sellIn).to.equal(-6);
+  });
+
+  test("Conjured items quality is never negative", () => {
+    const item = updateOnce("Conjured Mana Cake", 10, 0);
+    expect(item.quality).to.equal(0);
+  });
+
+  test("Mutant: Conjured at sellIn=1 uses before sell date", () => {
+    const item = updateOnce("Conjured Mana Cake", 1, 20);
+    expect(item.quality).to.equal(18);
+    expect(item.sellIn).to.equal(0);
+  });
+});
