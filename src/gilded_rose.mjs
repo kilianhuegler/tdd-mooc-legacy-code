@@ -23,6 +23,9 @@ export class Shop {
         case "Backstage passes to a TAFKAL80ETC concert":
           updateBackstagePasses(item);
           break;
+        case "Conjured Mana Cake":
+          updateConjured(item);
+          break;
         default:
           updateNormal(item);
           break;
@@ -63,4 +66,14 @@ function updateNormal(item) {
   decreaseQuality(item);
   item.sellIn--;
   if (item.sellIn < 0) decreaseQuality(item);
+}
+
+function updateConjured(item) {
+  decreaseQuality(item);
+  decreaseQuality(item);
+  item.sellIn--;
+  if (item.sellIn < 0) {
+    decreaseQuality(item);
+    decreaseQuality(item);
+  }
 }
