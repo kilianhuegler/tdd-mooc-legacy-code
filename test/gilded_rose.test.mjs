@@ -93,3 +93,39 @@ describe("Gilded Rose -> Sulfuras", () => {
     expect(item.sellIn).to.equal(-1);
   });
 })
+
+describe("Gilded Rose -> Backstage passes", () => {
+  test("Backstage passes increases in quality by 2 when there are 10 days or less", () => {
+    const item = updateOnce("Backstage passes to a TAFKAL80ETC concert", 10, 20);
+    expect(item.quality).to.equal(22);
+    expect(item.sellIn).to.equal(9);
+  })
+
+  test("Backstage passes increases in quality by 3 when there are 5 days or less", () => {
+    const item = updateOnce("Backstage passes to a TAFKAL80ETC concert", 5, 20);
+    expect(item.quality).to.equal(23);
+    expect(item.sellIn).to.equal(4);
+  })
+
+  test("Backstage passes gain 1 quality when more than 10 days remain", () => {
+    const item = updateOnce("Backstage passes to a TAFKAL80ETC concert", 15, 20);
+    expect(item.quality).to.equal(21);
+    expect(item.sellIn).to.equal(14);
+  })
+
+  test("Backstage passes drop to 0 quality after the concert (on sell date)", () => {
+    const item = updateOnce("Backstage passes to a TAFKAL80ETC concert", 0, 20);
+    expect(item.sellIn).to.equal(-1);
+    expect(item.quality).to.equal(0);
+  });
+
+  test("Backstage passes drop to 0 quality after the concert (already past)", () => {
+    const item = updateOnce("Backstage passes to a TAFKAL80ETC concert", -1, 20);
+    expect(item.quality).to.equal(0);
+  });
+
+  test("Backstage passes quality never exceeds 50 when already at 50", () => {
+    const item = updateOnce("Backstage passes to a TAFKAL80ETC concert", 5, 50);
+    expect(item.quality).to.equal(50);
+  });
+})
