@@ -48,3 +48,33 @@ describe("Gilded Rose -> normal items", () => {
     expect(item.quality).to.equal(0);
   });
 });
+
+describe("Gilded Rose -> Aged brie", () => {
+  test("Aged Brie increases in quality the older it gets per day before sell date", () => {
+    const item = updateOnce("Aged Brie", 10, 20);
+    expect(item.quality).to.equal(21);
+    expect(item.sellIn).to.equal(9);
+  })
+
+  test("Aged Brie after sell date gains 2 quality", () => {
+    const item = updateOnce("Aged Brie", -5, 20);
+    expect(item.quality).to.equal(22);
+    expect(item.sellIn).to.equal(-6);
+  })
+
+  test("Aged brie on sell date gains 2 quality", () => {
+    const item = updateOnce("Aged Brie", 0, 20);
+    expect(item.sellIn).to.equal(-1);
+    expect(item.quality).to.equal(22);
+  });
+
+  test("Aged Brie quality never exceeds 50 (before sell date)", () => {
+    const item = updateOnce("Aged Brie", 10, 50);
+    expect(item.quality).to.equal(50);
+  })
+
+  test("Aged Brie quality never exceeds 50 (after sell date)", () => {
+    const item = updateOnce("Aged Brie", 0, 50);
+    expect(item.quality).to.equal(50);
+  });
+})
