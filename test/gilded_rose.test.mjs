@@ -154,3 +154,11 @@ describe("Gilded Rose -> Backstage passes", () => {
     expect(item.quality).to.equal(50);
   });
 });
+
+describe("Gilded Rose -> Conjured items", () => {
+  test("Conjured items degrade in quality twice as fast as normal items", () => {
+    const item = updateOnce("Conjured Mana Cake", 10, 20);
+    expect(item.quality).to.equal(18);
+    expect(item.sellIn).to.equal(9);
+  });
+})
