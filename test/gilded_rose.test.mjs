@@ -16,6 +16,11 @@ describe("Gilded Rose -> normal items", () => {
     expect(items[0].name).to.equal("foo");
   });
 
+  test("Coverage: Shop without items has empty items array", () => {
+    const shop = new Shop();
+    expect(shop.items).to.deep.equal([]);
+  });
+
   test("before sell date -> quality and sellIn decrease by 1", () => {
     const item = updateOnce("foobar", 10, 20);
     expect(item.sellIn).to.equal(9);
