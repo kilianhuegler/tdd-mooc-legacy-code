@@ -33,28 +33,26 @@ export class Shop {
   }
 }
 
+function increaseQuality(item) {
+  if (item.quality < 50) item.quality++;
+}
+
+function decreaseQuality(item) {
+  if (item.quality > 0) item.quality--;
+}
+
 function updateAgedBrie(item) {
-  if (item.quality < 50) {
-    item.quality++;
-  }
+  increaseQuality(item);
   item.sellIn--;
-  if (item.sellIn < 0 && item.quality < 50) {
-    item.quality++;
-  }
+  if (item.sellIn < 0) increaseQuality(item);
 }
 
 function updateSulfuras(item) {}
 
 function updateBackstagePasses(item) {
-  if (item.quality < 50) {
-    item.quality++;
-    if (item.sellIn < 11 && item.quality < 50) {
-      item.quality++;
-    }
-    if (item.sellIn < 6 && item.quality < 50) {
-      item.quality++;
-    }
-  }
+  increaseQuality(item);
+  if (item.sellIn < 11) increaseQuality(item);
+  if (item.sellIn < 6) increaseQuality(item);
   item.sellIn--;
   if (item.sellIn < 0) {
     item.quality = 0;
@@ -62,11 +60,7 @@ function updateBackstagePasses(item) {
 }
 
 function updateNormal(item) {
-  if (item.quality > 0) {
-    item.quality--;
-  }
+  decreaseQuality(item);
   item.sellIn--;
-  if (item.sellIn < 0 && item.quality > 0) {
-    item.quality--;
-  }
+  if (item.sellIn < 0) decreaseQuality(item);
 }
