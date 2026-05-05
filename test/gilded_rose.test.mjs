@@ -47,6 +47,12 @@ describe("Gilded Rose -> normal items", () => {
     const item = updateOnce("normal", -1, 1);
     expect(item.quality).to.equal(0);
   });
+
+  test("Mutant: sellIn=1 still uses before sell date rate", () => {
+    const item = updateOnce("normal item", 1, 10);
+    expect(item.sellIn).to.equal(0);
+    expect(item.quality).to.equal(9);
+  });
 });
 
 describe("Gilded Rose -> Aged brie", () => {
@@ -126,6 +132,21 @@ describe("Gilded Rose -> Backstage passes", () => {
 
   test("Backstage passes quality never exceeds 50 when already at 50", () => {
     const item = updateOnce("Backstage passes to a TAFKAL80ETC concert", 5, 50);
+    expect(item.quality).to.equal(50);
+  });
+
+  test("Mutant: Backstage passes gain 1 quality at 11 days left", () => {
+    const item = updateOnce("Backstage passes to a TAFKAL80ETC concert", 11, 20);
+    expect(item.quality).to.equal(21);
+  });
+
+  test("Mutant: Backstage passes gain 2 quality at 6 days left", () => {
+    const item = updateOnce("Backstage passes to a TAFKAL80ETC concert", 6, 20);
+    expect(item.quality).to.equal(22);
+  });
+
+  test("Mutant: Backstage passes quality is capped at 50 also with bonus", () => {
+    const item = updateOnce("Backstage passes to a TAFKAL80ETC concert", 5, 49);
     expect(item.quality).to.equal(50);
   });
 })
